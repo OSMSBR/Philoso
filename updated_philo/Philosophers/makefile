@@ -1,6 +1,6 @@
 NAME    = Philosophers
 CC      = gcc
-FLAGS   = -Wall -Wextra -Werror  -fsanitize=address -fsanitize=undefined -g3 -pthread 
+FLAGS   = -Wall -Wextra -Werror #-pthread #-fsanitize=thread #-fsanitize=undefined -g3 -pthread 
 SRC     = 	main_philo.c \
 			utils.c \
 			utils2.c\

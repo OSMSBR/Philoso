@@ -6,7 +6,7 @@
 /*   By: osebbar <osebbar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 01:58:35 by osebbar           #+#    #+#             */
-/*   Updated: 2025/02/21 03:40:33 by osebbar          ###   ########.fr       */
+/*   Updated: 2025/02/21 06:43:43 by osebbar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,11 @@ void assign_forks(t_philo **philo, t_data *data , int i)
 	{
         (*philo)[i].left_fork = &data->forks[i];
         (*philo)[i].right_fork = &data->forks[(i + 1) % data->num_philos];
-
 	}
 	else
 	{
-		(*philo)[i].right_fork = &data->forks[(i + 1) % data->num_philos];
-		(*philo)[i].left_fork = &data->forks[i];
+		(*philo)[i].left_fork = &data->forks[(i + 1) % data->num_philos];
+		(*philo)[i].right_fork = &data->forks[i];
 	}
 }
 t_philo* ft_philo_init(t_data *data)
@@ -62,7 +61,7 @@ int ft_data_init(t_data *data, int noa ,char *input[])
     if(noa == 6)
         data->meals_to_eat = ft_atoi(input[5]);
     else
-        data->meals_to_eat = 0;
+        data->meals_to_eat = -1;
     
     data->forks = malloc(sizeof(pthread_mutex_t) * data->num_philos);
     data->write_lock = malloc(sizeof(pthread_mutex_t));
@@ -73,7 +72,10 @@ int ft_data_init(t_data *data, int noa ,char *input[])
         printf("Malloc Error \n");
         return 1;
     }
-    
+    memset(data->forks, 0, sizeof(pthread_mutex_t) * data->num_philos);
+    memset(data->write_lock, 0, sizeof(pthread_mutex_t));
+    memset(data->death_lock, 0, sizeof(pthread_mutex_t));
+    memset(data->data_access, 0, sizeof(pthread_mutex_t) * data->num_philos);
 
     // forks
     while(i < data->num_philos)
@@ -106,11 +108,16 @@ int ft_data_init(t_data *data, int noa ,char *input[])
         free(data->data_access);
         return 1;
     }
+    i = 0;
     while(i < data->num_philos)
     {
-        if(pthread_mutex_init(data->data_access,NULL) != 0)
+        if(pthread_mutex_init(&data->data_access[i],NULL) != 0)
         {
             destroy_mutexes(data->data_access , i);
+            free(data->forks);
+            free(data->write_lock);
+            free(data->death_lock);
+            free(data->data_access);
             return 1;
         }
         i++;

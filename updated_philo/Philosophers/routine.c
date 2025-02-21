@@ -6,7 +6,7 @@
 /*   By: osebbar <osebbar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 05:11:21 by osebbar           #+#    #+#             */
-/*   Updated: 2025/02/21 01:42:59 by osebbar          ###   ########.fr       */
+/*   Updated: 2025/02/21 06:41:12 by osebbar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void	update_philo_info(t_philo *philo)
 {
-	pthread_mutex_lock(philo->data->data_access + philo->id);
+	pthread_mutex_lock(philo->data->data_access + philo->id - 1 );
 	philo->last_meal_time = get_current_time();
 	philo->meals_eaten++;
-	pthread_mutex_unlock(philo->data->data_access + philo->id);
+	pthread_mutex_unlock(philo->data->data_access + philo->id - 1);
 }
 
 int	philo_eating(t_philo *philo)
@@ -50,10 +50,10 @@ int	philo_eating(t_philo *philo)
 
 void	philo_first_actions(t_philo *philo)
 {
-	pthread_mutex_lock(philo->data->data_access + philo->id);
+	pthread_mutex_lock(philo->data->data_access + philo->id - 1);
 	philo->last_meal_time = get_current_time();
-	pthread_mutex_unlock(philo->data->data_access + philo->id);
-	if (philo->id % 2 != 0)
+	pthread_mutex_unlock(philo->data->data_access + philo->id - 1);
+	if (philo->id % 2 == 0)
 		usleep(500);
 }
 
@@ -81,7 +81,7 @@ void	*routine(void *args)
 		ft_usleep(philo->data->time_to_sleep, philo);
 		if (print_status(get_current_time(), philo, "is thinking"))
 			return (NULL);
-		usleep(500);
+		usleep(100);
 	}
 	return (NULL);
 }

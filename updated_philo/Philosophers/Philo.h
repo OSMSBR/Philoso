@@ -6,7 +6,7 @@
 /*   By: osebbar <osebbar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 01:32:21 by osebbar           #+#    #+#             */
-/*   Updated: 2025/02/21 01:42:26 by osebbar          ###   ########.fr       */
+/*   Updated: 2025/02/21 04:27:19 by osebbar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int         philo_routine(void *arg);
 int         parse(int noa ,char **input);
 int         ft_usleep(size_t milliseconds, t_philo *philos);
 int         ft_data_init(t_data *data, int argc, char *input[]);
-int	        print_status(int time, t_philo *philo, char *state);
+int        print_status(size_t time, t_philo *philo, char *state);
 void	    *routine(void *args);
 bool	    ft_stop(t_philo *philo);
 void	    clear_data(t_data *data);

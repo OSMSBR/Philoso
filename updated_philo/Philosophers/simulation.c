@@ -6,7 +6,7 @@
 /*   By: osebbar <osebbar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 04:30:24 by osebbar           #+#    #+#             */
-/*   Updated: 2025/02/21 03:51:52 by osebbar          ###   ########.fr       */
+/*   Updated: 2025/02/21 06:34:36 by osebbar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,12 @@ int ft_checker(t_philo **philo)
             if((*philo)[i].meals_eaten >= (*philo)->data->meals_to_eat)
                 philos_ate++;
             pthread_mutex_unlock(&(*philo)->data->data_access[i]);
+            i++;
         }
-        if(philos_ate == (*philo)->data->num_philos)
+        if( (*philo)->data->meals_to_eat != -1 && philos_ate == (*philo)->data->num_philos)
             ft_set_stop(*philo, -1);
     }
+    printf("meals eaten : %d\n",philos_ate);
     return 0;
 }
 int	create_philos(t_philo *philo)
@@ -66,11 +68,12 @@ int	create_philos(t_philo *philo)
 	i = 0;
 	while (i < philo->data->num_philos)
 	{
+        pthread_mutex_lock(philo->data->data_access + philo->id - 1);
 		philo->last_meal_time = get_current_time();
+        pthread_mutex_unlock(philo->data->data_access + philo->id - 1);
 		if (pthread_create(&philo[i].philo_thread, NULL, routine,
 				&philo[i]) != 0)
 			return (1);
-        // printf("Creating philosopher %d\n", i + 1);
 		i++;
 	}
 	return (0);
@@ -91,6 +94,6 @@ void    ft_start(t_philo **philo)
             i++;
         }
     }
-        ft_checker(philo);
+    ft_checker(philo);
     return;
 }
