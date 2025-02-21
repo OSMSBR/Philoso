@@ -6,26 +6,26 @@
 /*   By: osebbar <osebbar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 01:44:46 by osebbar           #+#    #+#             */
-/*   Updated: 2025/02/20 02:20:36 by osebbar          ###   ########.fr       */
+/*   Updated: 2025/02/21 09:19:03 by osebbar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Philo.h"
 
-int check_input(char *input)
+int	check_input(char *input)
 {
-    int i;
-    
-    i = 0;
-    if(!input || !input[0])
-        return 1;
-    while(input[i])
-    {
-        if(!ft_isdigit(input[i]))
-            return 1;
-        i++;
-    }
-    return 0;
+	int	i;
+
+	i = 0;
+	if (!input || !input[0])
+		return (1);
+	while (input[i])
+	{
+		if (!ft_isdigit(input[i]))
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 int	ft_isdigit(int c)
@@ -38,9 +38,9 @@ int	ft_isdigit(int c)
 
 int	ft_atoi(char *str)
 {
-	size_t	i;
 	int		nbr;
 	int		sign;
+	size_t	i;
 
 	i = 0;
 	nbr = 0;

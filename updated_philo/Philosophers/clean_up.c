@@ -6,7 +6,7 @@
 /*   By: osebbar <osebbar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 04:12:43 by osebbar           #+#    #+#             */
-/*   Updated: 2025/02/21 05:59:13 by osebbar          ###   ########.fr       */
+/*   Updated: 2025/02/21 09:10:59 by osebbar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@ void	destroy_mutexes(pthread_mutex_t *mutexes, int n)
 			pthread_mutex_destroy(mutexes + i);
 		i++;
 	}
-    free(mutexes);
+	free(mutexes);
 }
+
 void	clear_data(t_data *data)
 {
 	if (data->death_lock)
@@ -35,8 +36,6 @@ void	clear_data(t_data *data)
 		pthread_mutex_destroy(data->write_lock);
 	if (data->forks)
 		destroy_mutexes(data->forks, data->num_philos);
-	// if(data->data_access)
-	// 	destroy_mutexes(data->data_access , data->num_philos);
 	free(data->write_lock);
 	free(data->death_lock);
 	free(data->data_access);
