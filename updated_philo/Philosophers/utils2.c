@@ -6,7 +6,7 @@
 /*   By: osebbar <osebbar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 04:32:24 by osebbar           #+#    #+#             */
-/*   Updated: 2025/02/21 01:40:47 by osebbar          ###   ########.fr       */
+/*   Updated: 2025/02/21 03:53:36 by osebbar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,17 @@
 int	print_status(int time, t_philo *philo, char *state)
 {
 	if (ft_stop(philo) == true)
-		return (1);
+	{
+	    printf("Philosopher %d stopped before printing\n", philo->id);
+	    return (1);
+	}
 	pthread_mutex_lock(philo->data->write_lock);
 	if (ft_stop(philo) == true)
 	{
 		pthread_mutex_unlock(philo->data->write_lock);
 		return (1);
 	}
-	printf("%lu %u %s\n", time - philo->data->start_time, philo->id + 1, state);
+	printf("%lu %u %s\n", time - philo->data->start_time, philo->id, state);
 	pthread_mutex_unlock(philo->data->write_lock);
 	return (0);
 }

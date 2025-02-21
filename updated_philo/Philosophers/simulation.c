@@ -6,7 +6,7 @@
 /*   By: osebbar <osebbar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 04:30:24 by osebbar           #+#    #+#             */
-/*   Updated: 2025/02/21 02:39:55 by osebbar          ###   ########.fr       */
+/*   Updated: 2025/02/21 03:51:52 by osebbar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int ft_checker(t_philo **philo)
         while(i < (*philo)->data->num_philos)
         {
             pthread_mutex_lock(&(*philo)->data->data_access[i]);
-            if(get_current_time() - (*philo)->last_meal_time > (unsigned long)(*philo)->data->time_to_die)
+            if(get_current_time() - (*philo)[i].last_meal_time > (unsigned long)(*philo)->data->time_to_die)
             {
                 ft_set_stop(*philo , i);
                 pthread_mutex_unlock(&(*philo)->data->data_access[i]);
@@ -52,7 +52,7 @@ int ft_checker(t_philo **philo)
             }
             if((*philo)[i].meals_eaten >= (*philo)->data->meals_to_eat)
                 philos_ate++;
-            pthread_mutex_unlock((*philo)->data->data_access);
+            pthread_mutex_unlock(&(*philo)->data->data_access[i]);
         }
         if(philos_ate == (*philo)->data->num_philos)
             ft_set_stop(*philo, -1);
@@ -81,7 +81,7 @@ void    ft_start(t_philo **philo)
 
     i = 0;
     (*philo)->data->start_time = get_current_time();
-    if(!create_philos(*philo))
+    if(create_philos(*philo))
     {
         ft_set_stop(*philo, -1);
         while(i < (*philo)->data->num_philos)
@@ -91,7 +91,6 @@ void    ft_start(t_philo **philo)
             i++;
         }
     }
-    else
         ft_checker(philo);
     return;
 }
